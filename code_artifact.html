@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インド留学生受入プログラム 11日間スケジュール</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        body { 
+            font-family: 'Noto Sans JP', 'Inter', sans-serif; 
+            background-color: #fdfbf7; 
+            color: #334155; 
+        }
+        .day-tab.active { 
+            background-color: #1e293b; 
+            color: #ffffff; 
+            border-color: #1e293b; 
+        }
+        .schedule-card { 
+            transition: all 0.2s ease; 
+        }
+        .schedule-card:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">🇮🇳</span>
+                <span class="text-lg font-bold text-slate-800 tracking-wider">インド留学生・引率者 受入計画</span>
+                <span class="text-2xl">🇯🇵</span>
+            </div>
+            <div class="hidden sm:flex space-x-2 text-xs font-semibold">
+                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full">令和8年6月実施</span>
+                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">ホストファミリー連携</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8">
+        
+        <!-- イントロダクション -->
+        <header class="mb-8 bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-100/70">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-snug">
+                令和8年度 インタラクティブ受入スケジュール
+            </h1>
+            <p class="text-sm text-slate-600 mt-2 max-w-4xl leading-relaxed">
+                ファイル『R080608＿インド受け入れ1‗枚‗計画.docx』の公式情報を元にした管理ツールです。留学生と引率者（シャーマ先生他）の11日間の行動予定、授業、伝統文化体験、出張スタッフ、および食事ロジスティクスをスマートに確認できます。
+            </p>
+        </header>
+
+        <!-- 分析・概要セクション -->
+        <section id="analysis-dashboard" class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            
+            <!-- イベント構成比グラフ -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <h3 class="font-bold text-base text-slate-800 mb-1">プログラム活動の内訳</h3>
+                <p class="text-xs text-slate-400 mb-4">全日程中のイベントジャンル分布</p>
+                <div class="relative h-60 w-full flex items-center justify-center">
+                    <canvas id="jpActivityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- クイックサマリーとトピックス -->
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- 日本の文化体験・交流 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-600 tracking-wider uppercase">CULTURE & EXCHANGE</span>
+                        <h3 class="font-bold text-lg text-slate-800 mt-1 mb-2">充実した伝統文化＆交流プログラム</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            茶道体験（菱沼先生指導）、味噌汁＋そば打ち体験（菊池先生指導）、多用途ホールでの剣道デモンストレーション、神峰神社参拝など、多岐にわたる日本理解プログラムが組み込まれています。
+                        </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium border border-emerald-100">🍵 茶道体験</span>
+                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium border border-emerald-100">🥢 そば打ち</span>
+                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium border border-emerald-100">⚔️ 剣道デモ</span>
+                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium border border-emerald-100">⛩️ 神峰神社</span>
+                    </div>
+                </div>
+
+                <!-- ホスト校基本情報 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-amber-600 tracking-wider uppercase">HOSTING INFO</span>
+                        <h3 class="font-bold text-lg text-slate-800 mt-1 mb-2">主な受入ホスト・連絡事項</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                            引率者は日立市内のホテルに滞在、休養日はオドノフ先生がサポートします。1年生・2年生（GSコース）、3年7組を中心とする全校協力型のアプローチです。
+                        </p>
+                    </div>
+                    <div class="space-y-2 text-xs text-slate-600">
+                        <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-400 mr-2"></span> <span><strong>中心スタッフ:</strong> オドノフ教員、黒田教員、大津教員</span></div>
+                        <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-400 mr-2"></span> <span><strong>引率宿泊先:</strong> 日立市内ホテル</span></div>
+                        <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-400 mr-2"></span> <span><strong>食事手配:</strong> コンビニ昼食や「ナマステ」での夕食</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- フィルターボタン -->
+        <div class="mb-4 flex flex-wrap gap-2 items-center">
+            <span class="text-xs font-bold text-slate-400 mr-2">予定の絞り込み:</span>
+            <button onclick="filterEvents('all')" id="btn-filter-all" class="px-3 py-1 text-xs font-semibold rounded-full bg-slate-800 text-white border border-slate-800 transition">すべて</button>
+            <button onclick="filterEvents('school')" id="btn-filter-school" class="px-3 py-1 text-xs font-semibold rounded-full bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 transition">🏫 授業・学校</button>
+            <button onclick="filterEvents('culture')" id="btn-filter-culture" class="px-3 py-1 text-xs font-semibold rounded-full bg-white text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition">🍵 文化・交流</button>
+            <button onclick="filterEvents('tour')" id="btn-filter-tour" class="px-3 py-1 text-xs font-semibold rounded-full bg-white text-orange-600 border border-orange-200 hover:bg-orange-50 transition">🗺️ 観光・ツアー</button>
+            <button onclick="filterEvents('logistics')" id="btn-filter-logistics" class="px-3 py-1 text-xs font-semibold rounded-full bg-white text-purple-600 border border-purple-200 hover:bg-purple-50 transition">📦 移動・手続き</button>
+        </div>
+
+        <!-- 日付タブナビゲーション -->
+        <div class="flex overflow-x-auto pb-3 gap-2 no-scrollbar" id="jpDateTabs">
+            <!-- JSにて動的に日付タブが挿入されます -->
+        </div>
+
+        <!-- スケジュール詳細エリア -->
+        <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            
+            <!-- 日付ヘッダー -->
+            <div id="jpDayHeader" class="bg-slate-900 px-6 py-5 md:px-8 md:py-6 text-white flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 bg-white/20 rounded text-xs font-semibold tracking-wider" id="displayDayNum">DAY 1</span>
+                        <h4 id="displayJpDate" class="text-xl md:text-2xl font-bold">6月13日 (土)</h4>
+                    </div>
+                    <p id="dayJpSummary" class="text-xs md:text-sm text-slate-300 mt-1">成田空港到着＆ホストファミリー対面式</p>
+                </div>
+                <div class="flex flex-wrap gap-2 items-center">
+                    <span id="staffJpBadge" class="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-medium border border-white/20">
+                        出張/担当: オドノフ、黒田
+                    </span>
+                </div>
+            </div>
+
+            <!-- メインスケジュールコンテンツ -->
+            <div class="p-6 md:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    
+                    <!-- タイムライン (左側 3カラム分) -->
+                    <div class="lg:col-span-3">
+                        <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">本日のタイムライン</h5>
+                        <div id="jpTimelineContainer" class="space-y-4">
+                            <!-- JSにて動的にタイムラインカードが挿入されます -->
+                        </div>
+                    </div>
+
+                    <!-- 右側サイドパネル: ロジスティクス (1カラム分) -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-slate-50 rounded-xl p-5 border border-slate-100 sticky top-24 space-y-5">
+                            
+                            <!-- 引率者の食事情報 -->
+                            <div>
+                                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center">
+                                    🍛 引率者の食事
+                                </h5>
+                                <div id="jpMealContainer" class="space-y-2 text-xs">
+                                    <!-- JSにて食事状況が更新されます -->
+                                </div>
+                            </div>
+
+                            <hr class="border-slate-200">
+
+                            <!-- クイックヘルプ -->
+                            <div>
+                                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">カテゴリ凡例</h5>
+                                <div class="space-y-1.5 text-xs">
+                                    <div class="flex items-center"><span class="w-2.5 h-2.5 rounded bg-blue-500 mr-2"></span> <span>授業・校内活動</span></div>
+                                    <div class="flex items-center"><span class="w-2.5 h-2.5 rounded bg-emerald-500 mr-2"></span> <span>文化体験・特別交流</span></div>
+                                    <div class="flex items-center"><span class="w-2.5 h-2.5 rounded bg-orange-500 mr-2"></span> <span>学外ツアー・見学会</span></div>
+                                    <div class="flex items-center"><span class="w-2.5 h-2.5 rounded bg-purple-500 mr-2"></span> <span>移動・オリエン他</span></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="text-center text-slate-400 text-xs mt-12">
+        <p>© 2026 茨城県立高校 インド受入プログラム計画管理システム</p>
+        <p class="mt-1">R080608＿インド受け入れ1‗枚‗計画.docx 準拠</p>
+    </footer>
+
+    <script>
+        // 日本語オリジナルスケジュールデータ
+        const jpScheduleData = [
+            {
+                day: "DAY 1",
+                date: "6月13日 (土)",
+                summary: "成田空港到着＆ホストファミリー対面引き渡し",
+                staff: "オドノフ、黒田",
+                meals: { b: "なし / 機内", l: "なし / 機内", d: "軽食 (オドノフ宅)" },
+                events: [
+                    { time: "14:30", title: "学校出発", detail: "貸切バスなどで成田空港へ向けて出発。", cat: "logistics" },
+                    { time: "16:00", title: "空港到着", detail: "成田空港着、インド派遣団の到着を待機・出迎え。", cat: "logistics" },
+                    { time: "17:30", title: "空港出発", detail: "留学生・引率教員全員で学校へ帰還路につく。", cat: "logistics" },
+                    { time: "19:30", title: "学校到着 ＆ 対面式", detail: "留学生とホストファミリーが初顔合わせ。対面引き渡し式を行います。インド引率教員はオドノフ家にてホームステイ開始。", cat: "culture" }
+                ]
+            },
+            {
+                day: "DAY 2",
+                date: "6月14日 (日)",
+                summary: "ホストファミリーデー ＆ 地域フェスティバル視察",
+                staff: "ホストファミリー / オドノフ",
+                meals: { b: "オドノフ宅", l: "オドノフ宅", d: "オドノフ宅" },
+                events: [
+                    { time: "終日", title: "留学生：ホストファミリー宅", detail: "各ホストファミリーでの生活体験、地域活動、近郊への小旅行など。", cat: "culture" },
+                    { time: "随時", title: "引率者：環境フェスティバル視察", detail: "那珂市の環境フェスティバルを訪問。Blue Fairies（ブルーフェアリーズ）の実演ステージを観賞します。", cat: "tour" }
+                ]
+            },
+            {
+                day: "DAY 3",
+                date: "6月15日 (月)",
+                summary: "オリエンテーション、サバイバル日本語①、ウェルカム演奏",
+                staff: "学校担当教員",
+                meals: { b: "オドノフ宅", l: "オドノフ宅", d: "ホテル配属" },
+                events: [
+                    { time: "08:10", title: "校長挨拶 (校長室・会議室)", detail: "校長先生より歓迎のご挨拶および関係者のご紹介を行います。", cat: "school" },
+                    { time: "1限 (08:40)", title: "授業参加 (ホスト生徒と共に)", detail: "留学生はホスト生徒が在籍する学級の通常授業に同席します。", cat: "school" },
+                    { time: "2限 (09:40)", title: "授業参加 (通常科目の見学)", detail: "日常の授業をそのまま体験します。", cat: "school" },
+                    { time: "3限 (10:40)", title: "オリエンテーション", detail: "ゼミ室Aにて、今後の学校生活における注意事項やスケジュールの最終確認を行います。", cat: "logistics" },
+                    { time: "4限 (11:40)", title: "シャーマ先生ゼミ：インド文化紹介", detail: "ゼミ室Aにて。引率のシャーマ先生による本校生徒向けインド文化特別講義。", cat: "culture" },
+                    { time: "昼休み (12:30)", title: "吹奏楽部ウェルカム演奏会", detail: "AVルームにて吹奏楽部によるスペシャル歓迎コンサートを開催。大迫力のアンサンブルを披露します。", cat: "culture" },
+                    { time: "5限 (13:15)", title: "授業参加＆引率教員見学", detail: "留学生は通常授業、引率教員は本校の教育手法を視察します。", cat: "school" },
+                    { time: "6限 (14:15)", title: "日本語① (サバイバル日本語)", detail: "ゼミ室Bにて。日本生活で即役立つ挨拶や基礎会話を学びます。", cat: "school" },
+                    { time: "7限 (15:15)", title: "通常授業参加", detail: "生徒と一緒に学校の終礼準備を含めた学級活動を体験。", cat: "school" },
+                    { time: "掃除・終礼", title: "学級活動への参加", detail: "留学生：ホスト生徒の教室で日本の学校名物「掃除・終礼」体験。引率者：2年5組・6組の学級活動見学。", cat: "school" },
+                    { time: "放課後 (夜)", title: "引率者ホテル移動 ＆ 夕食", detail: "引率者をホテル（日立市内）へ送迎。ウェルカムディナーを楽しみます。", cat: "logistics" }
+                ]
+            },
+            {
+                day: "DAY 4",
+                date: "6月16日 (火)",
+                summary: "進路見学会 (キャリア＆スタディツアー)",
+                staff: "オドノフ (終日随行)",
+                meals: { b: "ホテル", l: "見学会にて支給", d: "見学会にて支給" },
+                events: [
+                    { time: "終日", title: "進路見学会 参加", detail: "留学生・引率者は全員、2年6組の進路見学日程に完全同行。オドノフ教員がフルタイムで同行・英語解説対応します。", cat: "tour" },
+                    { time: "放課後 (夜)", title: "ホテル帰還＆夕食", detail: "ツアー終了後、引率者を日立のホテルへ送迎。夕食も同行サポートします。", cat: "logistics" }
+                ]
+            },
+            {
+                day: "DAY 5",
+                date: "6月17日 (水)",
+                summary: "茶道体験、ヒンディー語講座、探究学習",
+                staff: "学校担当教員、菱沼先生",
+                meals: { b: "ホテル", l: "コンビニ軽食", d: "ホテル配属" },
+                events: [
+                    { time: "1〜2限", title: "状況確認 ＆ 通常授業参加", detail: "留学生・引率者の健康状態を確認後、授業に参加します。", cat: "school" },
+                    { time: "3限 (10:40)", title: "日本語② (サバイバル日本語)", detail: "ゼミ室Aにて。お買い物や道案内のフレーズを実習します。", cat: "school" },
+                    { time: "4限 (11:40)", title: "2学年GS AWSの授業に参加", detail: "グローバルスタディ推進コースのアクティブラーニング（AWS：Academic Writing & Speaking）に共同参加。", cat: "school" },
+                    { time: "昼休み", title: "教室内昼食 ＆ 引率者コンビニ", detail: "留学生：教室にてお弁当。引率者：セブン-イレブン等のコンビニエンスストア体験＆休憩。", cat: "logistics" },
+                    { time: "5限 (13:15)", title: "シャーマ先生ゼミ：ヒンディー語", detail: "ゼミ室Cにて。シャーマ先生によるヒンディー語の体験ゼミナールを開講します。", cat: "culture" },
+                    { time: "6限 (14:15)", title: "総合探究・プロジェクト学習", detail: "各クラスの教室内で展開される探究活動（課題研究）を見学・共同研究。", cat: "school" },
+                    { time: "7限・掃除", title: "掃除・終礼", detail: "日本の習慣である清掃活動に取り組みます。", cat: "school" },
+                    { time: "放課後 (15:30)", title: "伝統文化：茶道体験 (茶道部)", detail: "和室にて茶道体験。茶道部・菱沼先生の指導のもと、お点前の鑑賞とお茶立て体験に挑みます。終了後引率者をホテル送迎。", cat: "culture" }
+                ]
+            },
+            {
+                day: "DAY 6",
+                date: "6月18日 (木)",
+                summary: "サバイバル日本語③、味噌汁＆そば打ち体験",
+                staff: "学校担当教員、菊池先生",
+                meals: { b: "ホテル", l: "コンビニ軽食", d: "ホテル配属" },
+                events: [
+                    { time: "1〜2限", title: "健康状態確認 ＆ 通常授業", detail: "日常の授業体験。体調不良がないか聞き取りも実施。", cat: "school" },
+                    { time: "3限 (10:40)", title: "日本語③ (サバイバル日本語)", detail: "ゼミ室Aにて。日本文化や学校でのマナーについての語学練習。", cat: "school" },
+                    { time: "4〜5限", title: "通常授業参加", detail: "英語や数学、体育など、ホスト生徒のクラス授業を直接体験。", cat: "school" },
+                    { time: "昼休み", title: "教室内昼食 ＆ 引率者コンビニ", detail: "留学生：教室。引率者：ファミリーマートなどにて昼食購入、休憩。", cat: "logistics" },
+                    { time: "6〜7限", title: "大掃除・終礼", detail: "授業後の徹底清掃とホームルーム活動に参加。", cat: "school" },
+                    { time: "放課後 (14:45)", title: "文化体験：味噌汁＆本格そば打ち", detail: "調理室にて、菊池先生を特別講師にお迎え。日本食の代表である『そば』を一から手打ちし、日本の伝統的な味噌汁と共に試食します。", cat: "culture" }
+                ]
+            },
+            {
+                day: "DAY 7",
+                date: "6月19日 (金)",
+                summary: "成果発表会、高萩キャンパス部活動見学、インドディナー",
+                staff: "学校担当教員",
+                meals: { b: "ホテル", l: "コンビニ軽食", d: "夕食：ナマステ高萩店" },
+                events: [
+                    { time: "1限 (08:40)", title: "日本語④ (サバイバル日本語)", detail: "ゼミ室Aにて。総まとめ学習。簡単な自己紹介スピーチを準備します。", cat: "school" },
+                    { time: "2限 (09:40)", title: "通常授業参加", detail: "ホストクラスにて通常の授業を体験。", cat: "school" },
+                    { time: "3限 (10:40)", title: "シャーマ先生ゼミ：英語指導法", detail: "ゼミ室Aにて。シャーマ先生による日本の英語教育・指導法に関する意見交換ゼミ。", cat: "culture" },
+                    { time: "4限 (11:40)", title: "留学生発表会 ＆ 交流会", detail: "3年7組教室にて、インド人留学生による派遣成果発表と異文化ディスカッションを実施します。", cat: "culture" },
+                    { time: "昼休み", title: "教室内昼食 ＆ 引率者コンビニ", detail: "留学生：教室。引率者：ローソン等にて昼食を購入、休息。", cat: "logistics" },
+                    { time: "5〜7限", title: "通常授業・大掃除・終礼", detail: "クラスの友達との会話を楽しみつつ、最終週に向けたHR活動に参加。", cat: "school" },
+                    { time: "放課後 (14:45)", title: "高萩キャンパス部活動見学", detail: "公用車にて高萩キャンパスへ移動。高校生ならではの熱い各種部活動（野球、サッカー、陸上等）を見学します。", cat: "tour" },
+                    { time: "夜 (夕食)", title: "『ナマステ』インドレストラン会食", detail: "高萩駅前の本格インド料理店「ナマステ」にて、引率者・随行教員によるディナーミーティングを行います。", cat: "culture" }
+                ]
+            },
+            {
+                day: "DAY 8",
+                date: "6月20日 (土)",
+                summary: "水戸歴史散策・ウォーキングツアー",
+                staff: "オドノフ (アテンド)",
+                meals: { b: "ホテル", l: "水戸市内にて", d: "水戸市内にて確認" },
+                events: [
+                    { time: "10:00", title: "水戸駅改札口 集合", detail: "引率者・参加メンバー全員で水戸駅の改札口前にて現地集合。", cat: "tour" },
+                    { time: "午前", title: "日本最大級の藩校『弘道館』見学", detail: "水戸藩の学問・武芸の場であった重要文化財「弘道館」を徒歩にて探訪。", cat: "tour" },
+                    { time: "昼食", title: "京成百貨店でのランチタイム", detail: "京成百貨店内のレストランにて、引率者の好みに合わせたランチをセレクトします。", cat: "tour" },
+                    { time: "午後", title: "千波湖周辺の散策 ＆ 水戸駅ショッピング", detail: "自然豊かな千波湖畔の遊歩道をウォーキング後、水戸駅ビルにて日本のお土産などのショッピングを満喫。現地解散となります。夕食手配を別途確認。", cat: "tour" }
+                ]
+            },
+            {
+                day: "DAY 9",
+                date: "6月21日 (日)",
+                summary: "ホストファミリー休養日 ＆ 引率教員完全オフ",
+                staff: "ホストファミリー / オドノフ",
+                meals: { b: "ホテル", l: "自由食 / 各自", d: "自由食 / 各自" },
+                events: [
+                    { time: "終日", title: "留学生：ホストファミリーと過ごす日", detail: "家族の一員として日曜日を穏やかに過ごし、異文化交流を深めます。", cat: "culture" },
+                    { time: "終日", title: "引率者：日立市での完全休養日", detail: "ホテル周辺や日立市内にて静養。オドノフ教員が必要なサポート（お買い物等）を行います。", cat: "tour" }
+                ]
+            },
+            {
+                day: "DAY 10",
+                date: "6月22日 (月)",
+                summary: "剣道実演、神峰神社参拝、修了証書授与式、1年4組交流",
+                staff: "学校長、担当教員",
+                meals: { b: "ホテル", l: "コンビニ軽食", d: "日立市内" },
+                events: [
+                    { time: "1〜4限", title: "通常授業参加", detail: "日本での最後の全日授業日となります。クラスメイトと時間を過ごします。", cat: "school" },
+                    { time: "昼休み (12:45)", title: "剣道実演デモンストレーション", detail: "多用途ホールにて剣道部生徒による迫力ある模擬稽古や技の解説が行われます。", cat: "culture" },
+                    { time: "5限 (13:15)", title: "地域文化：神峰神社 参拝", detail: "日立市の名刹「神峰神社（かみねじんじゃ）」を留学生・引率者一同で特別参拝。お参り作法を学びます。", cat: "tour" },
+                    { time: "6限 (14:15)", title: "修了証書授与式（校長室）", detail: "校長室にて閉会セレモニー。短期研修修了証書が一人一人に手渡されます。", cat: "logistics" },
+                    { time: "7限 (15:15)", title: "1年4組との異文化交流会", detail: "1年生のクラスを訪れ、同世代との活発なフリートークやお互いの文化を紹介し合う最後の親睦会を行います。", cat: "culture" },
+                    { time: "掃除・終礼", title: "学校最後の大掃除", detail: "学校中を綺麗にして感謝の気持ちを表します。その後、先生方と夕食会へ送迎。", cat: "school" }
+                ]
+            },
+            {
+                day: "DAY 11",
+                date: "6月23日 (火)",
+                summary: "ラスト授業、パッキング、そして成田空港から帰国へ",
+                staff: "オドノフ、大津",
+                meals: { b: "ホテル", l: "各自 / 機内", d: "なし / 機内" },
+                events: [
+                    { time: "1限 (08:40)", title: "3年7組授業参加 (最終クラス)", detail: "最も多くの時間を過ごした3年7組の教室で、最後の特別なホームルームや挨拶を交わします。", cat: "school" },
+                    { time: "2限 (09:40)", title: "自由時間・荷造りの最終確認", detail: "忘れ物がないか入念にチェック。お土産類をスーツケースに納めます。", cat: "logistics" },
+                    { time: "10:40", title: "学校出発 (帰路)", detail: "ホスト生徒や教員、ホストファミリーに見送られ、学校を出発。オドノフ、大津が同行します。", cat: "logistics" },
+                    { time: "12:30", title: "成田空港到着・出国サポート", detail: "成田空港着、航空会社カウンターでのチェックイン手続きや出国手続きをサポート。見送り完了後、教員は学校に戻ります。", cat: "logistics" }
+                ]
+            }
+        ];
+
+        let activeDayIdx = 0;
+        let activeFilter = 'all';
+
+        // 初期化処理
+        function jpInit() {
+            renderJpTabs();
+            renderJpDay(0);
+            renderJpChart();
+        }
+
+        // タブを描画
+        function renderJpTabs() {
+            const tabWrapper = document.getElementById('jpDateTabs');
+            tabWrapper.innerHTML = '';
+            jpScheduleData.forEach((item, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `tab-btn-${idx}`;
+                btn.className = `day-tab flex-shrink-0 px-4 py-2 rounded-xl border text-left transition-all ${idx === activeDayIdx ? 'active shadow-md font-semibold' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}`;
+                
+                const splitDate = item.date.split(' '); // "6月13日" と "(土)"
+                btn.innerHTML = `
+                    <span class="block text-[10px] uppercase opacity-75 font-bold tracking-wider">${item.day}</span>
+                    <span class="text-xs font-bold">${splitDate[0]}</span> <span class="text-[11px] font-medium opacity-80">${splitDate[1]}</span>
+                `;
+                btn.onclick = () => {
+                    activeDayIdx = idx;
+                    // 他のタブのアクティブ状態を削除
+                    document.querySelectorAll('.day-tab').forEach(b => {
+                        b.classList.remove('active', 'shadow-md', 'font-semibold');
+                        b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                    });
+                    // このタブをアクティブ化
+                    btn.classList.add('active', 'shadow-md', 'font-semibold');
+                    btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                    renderJpDay(idx);
+                };
+                tabWrapper.appendChild(btn);
+            });
+        }
+
+        // 指定された日のスケジュールを描画
+        function renderJpDay(index) {
+            const data = jpScheduleData[index];
+            document.getElementById('displayDayNum').innerText = data.day;
+            document.getElementById('displayJpDate').innerText = data.date;
+            document.getElementById('dayJpSummary').innerText = data.summary;
+            document.getElementById('staffJpBadge').innerText = `出張/担当: ${data.staff}`;
+
+            // 食事ロジスティクスの表示
+            const mealBox = document.getElementById('jpMealContainer');
+            mealBox.innerHTML = `
+                <div class="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-100">
+                    <span class="font-bold text-slate-500">朝食</span>
+                    <span class="text-slate-700 font-semibold text-right">${data.meals.b}</span>
+                </div>
+                <div class="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-100">
+                    <span class="font-bold text-slate-500">昼食</span>
+                    <span class="text-slate-700 font-semibold text-right">${data.meals.l}</span>
+                </div>
+                <div class="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-100">
+                    <span class="font-bold text-slate-500">夕食</span>
+                    <span class="text-slate-700 font-semibold text-right">${data.meals.d}</span>
+                </div>
+            `;
+
+            // タイムラインの構築
+            renderJpTimeline(data.events);
+        }
+
+        // タイムラインイベントの描画
+        function renderJpTimeline(events) {
+            const timeline = document.getElementById('jpTimelineContainer');
+            timeline.innerHTML = '';
+
+            const filteredEvents = activeFilter === 'all' 
+                ? events 
+                : events.filter(e => e.cat === activeFilter);
+
+            if (filteredEvents.length === 0) {
+                timeline.innerHTML = `
+                    <div class="p-8 text-center bg-slate-50 rounded-xl border border-dashed text-slate-400">
+                        該当するジャンルの予定はありません。
+                    </div>
+                `;
+                return;
+            }
+
+            filteredEvents.forEach(evt => {
+                let colorClass = 'border-slate-300';
+                let bgBadge = 'bg-slate-100 text-slate-700';
+                let catLabel = 'その他';
+
+                if (evt.cat === 'school') {
+                    colorClass = 'border-blue-500';
+                    bgBadge = 'bg-blue-50 text-blue-700';
+                    catLabel = '授業・学校';
+                } else if (evt.cat === 'culture') {
+                    colorClass = 'border-emerald-500';
+                    bgBadge = 'bg-emerald-50 text-emerald-700';
+                    catLabel = '伝統文化・交流';
+                } else if (evt.cat === 'tour') {
+                    colorClass = 'border-orange-500';
+                    bgBadge = 'bg-orange-50 text-orange-700';
+                    catLabel = '観光・ツアー';
+                } else if (evt.cat === 'logistics') {
+                    colorClass = 'border-purple-500';
+                    bgBadge = 'bg-purple-50 text-purple-700';
+                    catLabel = '手続き・移動';
+                }
+
+                const card = document.createElement('div');
+                card.className = `schedule-card p-4 bg-white border border-slate-100 border-l-4 ${colorClass} rounded-xl flex flex-col md:flex-row gap-2 md:gap-4`;
+                card.innerHTML = `
+                    <div class="w-24 flex-shrink-0 flex items-baseline md:flex-col gap-1.5">
+                        <span class="font-black text-slate-800 text-sm tracking-wide">${evt.time}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${bgBadge} md:mt-1">${catLabel}</span>
+                    </div>
+                    <div class="flex-1">
+                        <h6 class="font-bold text-slate-800 text-sm leading-snug">${evt.title}</h6>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">${evt.detail}</p>
+                    </div>
+                `;
+                timeline.appendChild(card);
+            });
+        }
+
+        // 予定の絞り込み機能
+        function filterEvents(category) {
+            activeFilter = category;
+            
+            // フィルターボタンのアクティブ表示変更
+            const filters = ['all', 'school', 'culture', 'tour', 'logistics'];
+            filters.forEach(cat => {
+                const btn = document.getElementById(`btn-filter-${cat}`);
+                if (cat === category) {
+                    btn.className = `px-3 py-1 text-xs font-semibold rounded-full bg-slate-800 text-white border border-slate-800 transition`;
+                } else {
+                    let baseColor = 'text-slate-600 border-slate-200 hover:bg-slate-50';
+                    if (cat === 'school') baseColor = 'text-blue-600 border-blue-200 hover:bg-blue-50';
+                    if (cat === 'culture') baseColor = 'text-emerald-600 border-emerald-200 hover:bg-emerald-50';
+                    if (cat === 'tour') baseColor = 'text-orange-600 border-orange-200 hover:bg-orange-50';
+                    if (cat === 'logistics') baseColor = 'text-purple-600 border-purple-200 hover:bg-purple-50';
+                    btn.className = `px-3 py-1 text-xs font-semibold rounded-full bg-white border ${baseColor} transition`;
+                }
+            });
+
+            // 現在表示している日を再描画（フィルター適用）
+            renderJpDay(activeDayIdx);
+        }
+
+        // プログラム内訳統計の表示
+        function renderJpChart() {
+            const ctx = document.getElementById('jpActivityChart').getContext('2d');
+            
+            // カテゴリのカウンター
+            const counts = { school: 0, culture: 0, tour: 0, logistics: 0 };
+            jpScheduleData.forEach(day => {
+                day.events.forEach(evt => {
+                    if (counts[evt.cat] !== undefined) {
+                        counts[evt.cat]++;
+                    }
+                });
+            });
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['授業・通常講義', '伝統文化・交流', '観光・見学会', '手続き・移動'],
+                    datasets: [{
+                        data: [counts.school, counts.culture, counts.tour, counts.logistics],
+                        backgroundColor: ['#3b82f6', '#10b981', '#f97316', '#a855f7'],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '72%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 12,
+                                font: { size: 10, weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `  ${context.label}: ${context.raw} 件`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onload = jpInit;
+    </script>
+</body>
+</html>
